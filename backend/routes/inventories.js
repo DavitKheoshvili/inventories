@@ -1,17 +1,38 @@
 const express = require("express");
+const { getAllProducts, createProduct, deleteProduct } = require("../db.js");
 const router = express();
 
 router
     .get("/", (req, res) => {
-        res.status(200).json({ message: "inventory get for show data" });
+        getAllProducts()
+            .then(productData => {
+                res.status(200).json(productData);
+            })
+            .catch((error) => {
+                res.status(500).json({ "error": "Something went wrong!" });
+            })
     })
     .post("/", (req, res) => {
-        res.status(200).json({ message: "inventory post for create data" });
+        const name = req.body.name;
+        const price = req.body.price;
+        const location = req.body.location;
+        createProduct(name, price, location)
+            .then(productData => {
+                res.status(200).json(productData);
+            })
+            .catch((error) => {
+                res.status(500).json({ "error": "Something went wrong!" });
+            })
     })
 
 router.delete("/:id", (req, res) => {
-    console.log(req.params.id);
-    res.status(200).json({ message: `inventory delete. user with id=${req.params.id}` });
+    deleteProduct(req.params.id)
+        .then(productData => {
+            res.status(200).json(productData);
+        })
+        .catch((error) => {
+            res.status(500).json({ "error": "Something went wrong!" });
+        })
 })
 
 // router.param("param", (req, res, next, param) => {
