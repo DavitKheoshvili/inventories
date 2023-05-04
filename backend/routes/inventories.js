@@ -18,4 +18,4 @@ router.delete("/:id", (req, res) => {
 // //     I will use this code to sort data later
 // })
 
-module.exports = router
+module.exports = router;

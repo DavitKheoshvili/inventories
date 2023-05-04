@@ -1,8 +1,18 @@
 const express = require("express");
 const app = express();
+const db = require("./db.js");
 
+async function dbConnect() {
+    try {
+        await db.authenticate();
+        console.log('Connection has been established successfully.');
+      } catch (error) {
+        console.error('Unable to connect to the database:', error);
+      }
+}
 
 app.get("/", (req, res) => {
+    dbConnect();
     res.status(200).json({ message: "main page" });
 })
 
