@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const db = require("./db.js");
+const { getAllProducts } = require("./db.js");
 
 async function dbConnect() {
     try {
