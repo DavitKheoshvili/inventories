@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ProductDataService } from "./services/product-data.service"
-
+import { Product } from "./../types"
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,7 +9,7 @@ import { ProductDataService } from "./services/product-data.service"
 export class AppComponent {
   title = 'frontend';
 
-  products:any;
+  products: Product[] = [];
   
   constructor(private service:ProductDataService) {}
   
@@ -18,6 +18,7 @@ export class AppComponent {
         .subscribe(response => {
           console.log("data", response);
           this.products = response;
-        });
+        }
+        );
   }
 }
