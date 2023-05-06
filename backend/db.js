@@ -24,14 +24,6 @@ const Product = sequelize.define('Product', {
     }
 });
 
-// Product.sync()
-//     .then(() => {
-//         console.log('Table created successfully!');
-//     })
-//     .catch((error) => {
-//         console.error('Error creating table:', error);
-//     });
-
 async function createProduct(name, price, location) {
     const product = await Product.create({ name, price, location });
     return getAllProducts();
@@ -53,8 +45,33 @@ async function deleteProduct(id) {
     await product.destroy();
     return getAllProducts();
 }
+
+function generateData() {
+    const num_rows = 50;
+    const data = [];
+    for (let i = 1; i <= num_rows; i++) {
+        data.push({
+            name: Math.random().toString(36).substring(2, 12),
+            price: Math.floor(Math.random() * 100) + 1,
+            location: Math.random().toString(36).substring(2, 12),
+        });
+    }
+    console.log(data);
+    // Insert data into table
+    Product.bulkCreate(data)
+        .then(() => {
+            console.log(`Inserted ${num_rows} rows into TestTable`);
+        })
+        .catch((err) => {
+            console.error('Error inserting data:', err);
+        })
+        
+}
+
+
 module.exports = {
     createProduct,
     getAllProducts,
-    deleteProduct
+    deleteProduct,
+    generateData
 };

@@ -1,9 +1,12 @@
 <h1>Angular Router</h1>
 
-<nav>
+<div class="header">
+  <nav>
   <a routerLink="/add" routerLinkActive="active" ariaCurrentWhenActive="page">
     <button type="button" class="btn btn-success">Add</button></a>
-</nav>
+  </nav>
+  <button (click)="onGenerate()" type="button" class="btn btn-success">Generate Data</button>
+</div>
 
 <table class="table table-striped" *ngFor="let product of products">
   <thead>
