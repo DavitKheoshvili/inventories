@@ -1,14 +1,29 @@
 <h1>Angular Router</h1>
 
-<ul class="list-group">
-  <li 
-      *ngFor="let product of products"
-      class="list-group-item">
-      {{ product.name }}
-  </li>
-</ul>
-
 <nav>
-  <a routerLink="/add" routerLinkActive="active" ariaCurrentWhenActive="page">hey</a>
+  <a routerLink="/add" routerLinkActive="active" ariaCurrentWhenActive="page">
+    <button type="button" class="btn btn-success">Add</button></a>
 </nav>
+
+<table class="table table-striped" *ngFor="let product of products">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Location</th>
+      <th scope="col">Operation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="col"># {{ product.id }}</th>
+      <th scope="col">{{ product.name }}</th>
+      <th scope="col">{{ product.price }}</th>
+      <th scope="col">{{ product.location }}</th>
+      <button type="button" class="btn btn-danger">Delete</button>
+    </tr>
+  </tbody>
+</table>
+
 <router-outlet></router-outlet>
