@@ -14,7 +14,7 @@
         <th scope="col">{{ product.name }}</th>
         <th scope="col">{{ product.price }}</th>
         <th scope="col">{{ product.location }}</th>
-        <button type="button" class="btn btn-danger">Delete</button>
+        <button type="button" class="btn btn-danger" (click)="onDeleteProduct(product.id)">Delete</button>
       </tr>
     </tbody>
   </table>
