@@ -1,5 +1,4 @@
 const { Sequelize, DataTypes } = require('sequelize');
-//const sequelize = new Sequelize('postgres://user:newuser:5432/test') // Example for postgres
 
 const sequelize = new Sequelize('test', 'newuser', 'newpassword', {
     host: 'localhost',
@@ -26,7 +25,7 @@ const Product = sequelize.define('Product', {
 
 async function createProduct(name, price, location) {
     const product = await Product.create({ name, price, location });
-    return getAllProducts();
+    return getAllProducts(1);
 }
 
 const pageSize = 20;
@@ -47,7 +46,7 @@ async function updateProduct(id, name, price, location) {
 async function deleteProduct(id) {
     const product = await Product.findByPk(id);
     await product.destroy();
-    return getAllProducts();
+    return getAllProducts(1);
 }
 
 function generateData() {
@@ -69,7 +68,6 @@ function generateData() {
         .catch((err) => {
             console.error('Error inserting data:', err);
         })
-
 }
 
 
@@ -78,5 +76,4 @@ module.exports = {
     getAllProducts,
     deleteProduct,
     generateData
-    // getData
 };

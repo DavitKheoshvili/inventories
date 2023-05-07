@@ -1,6 +1,12 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
 const { generateData } = require("./db.js");
+const bodyParser = require('body-parser');
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // async function dbConnect() {
 //     try {
@@ -16,17 +22,12 @@ const { generateData } = require("./db.js");
 //     res.status(200).json({ message: "main page" });
 // })
 app.get("/generate_random_data", (req, res) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  console.log("generate Clicked");
   generateData();
   res.status(200).json({ message: "Generated" });
 })
 
 
 const inventoriesRouter = require("./routes/inventories.js");
-
 app.use("/inventories", inventoriesRouter)
 
 app.use((req, res, next) => {

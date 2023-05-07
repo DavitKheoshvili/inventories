@@ -4,9 +4,6 @@ const router = express();
 
 router
     .get("/", (req, res) => {
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-        res.header('Access-Control-Allow-Headers', 'Content-Type');
         const page = parseInt(req.query.page) || 1;
         getAllProducts(page)
             .then(productData => {
@@ -20,13 +17,18 @@ router
         const name = req.body.name;
         const price = req.body.price;
         const location = req.body.location;
-        createProduct(name, price, location)
+        if (name && price && location) {
+            createProduct(name, price, location)
             .then(productData => {
                 res.status(200).json(productData);
             })
             .catch((error) => {
                 res.status(500).json({ "error": "Something went wrong!" });
             })
+        }else {
+            res.status(401).json({ "error": "All fields required!" });
+        }
+        
     })
 
 router.delete("/:id", (req, res) => {

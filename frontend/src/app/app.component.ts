@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { ProductDataService } from "./services/product-data.service"
-import { Product } from "./../types"
 import { GenerateDataService } from './services/generate-data.service';
 
 @Component({
@@ -12,7 +10,7 @@ export class AppComponent {
   title = 'frontend';
 
   constructor(private generateService: GenerateDataService) {}
-  
+
   onGenerate() {
     this.generateService.generateData().subscribe(response => {
       console.log('Response:', response);
