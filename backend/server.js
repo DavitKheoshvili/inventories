@@ -24,6 +24,7 @@ app.get("/generate_random_data", (req, res) => {
   res.status(200).json({ message: "Generated" });
 })
 
+
 const inventoriesRouter = require("./routes/inventories.js");
 
 app.use("/inventories", inventoriesRouter)

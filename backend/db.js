@@ -29,10 +29,14 @@ async function createProduct(name, price, location) {
     return getAllProducts();
 }
 
-async function getAllProducts() {
-    const products = await Product.findAll();
-    const productData = products.map(product => product.get({ plain: true }));
-    return productData;
+const pageSize = 20;
+async function getAllProducts(page) {
+    const offset = (page - 1) * pageSize;
+    const limit = pageSize;
+    const { count, rows } = await Product.findAndCountAll({ offset, limit });
+    const totalPages = Math.ceil(count / pageSize);
+    const data = rows.map((row) => row.dataValues);
+    return { data, totalPages };
 }
 
 async function updateProduct(id, name, price, location) {
@@ -65,7 +69,7 @@ function generateData() {
         .catch((err) => {
             console.error('Error inserting data:', err);
         })
-        
+
 }
 
 
@@ -74,4 +78,5 @@ module.exports = {
     getAllProducts,
     deleteProduct,
     generateData
+    // getData
 };

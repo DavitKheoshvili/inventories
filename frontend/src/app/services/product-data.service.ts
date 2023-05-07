@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Product } from './../../types'
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Product, ProductResponce } from './../../types'
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,7 +12,8 @@ export class ProductDataService {
    
   constructor(private httpClient: HttpClient) { }
   
-  getProduct(): Observable<Product[]>{
-    return this.httpClient.get<Product[]>(this.url);
+  getProduct(page: number): Observable<ProductResponce>{
+    const params = new HttpParams().set('page', String(page));
+    return this.httpClient.get<ProductResponce>(this.url, { params });
   }
 }
