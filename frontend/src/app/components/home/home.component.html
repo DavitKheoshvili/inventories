@@ -1,0 +1,23 @@
+<table class="table table-striped" *ngFor="let product of products">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Location</th>
+        <th scope="col">Operation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="col"># {{ product.id }}</th>
+        <th scope="col">{{ product.name }}</th>
+        <th scope="col">{{ product.price }}</th>
+        <th scope="col">{{ product.location }}</th>
+        <button type="button" class="btn btn-danger">Delete</button>
+      </tr>
+    </tbody>
+  </table>
+  <button *ngIf="currentPage > 1" (click)="prevPage()">Previous Page</button>
+  
+  <button *ngIf="currentPage < totalPages" (click)="nextPage()">Next Page</button>
