@@ -1,26 +1,33 @@
-<form (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-      <label for="name" class="form-label">Name:</label>
-      <input type="text" class="form-control" id="name" name="name" [(ngModel)]="product.name" required>
+<form (submit)="onSubmit()">
+  <div class="mb-3">
+    <label for="name" class="form-label">Name:</label>
+    <input type="text" class="form-control" id="name" name="name" [(ngModel)]="product.name">
+    <div *ngIf="product.name.length < 3" class="text-danger">
+      Name should be at least 3 characters.
     </div>
-    <div class="mb-3">
-      <label for="price" class="form-label">Price:</label>
-      <input type="number" class="form-control" id="price" name="price" [(ngModel)]="product.price" required>
+  </div>
+  <div class="mb-3">
+    <label for="price" class="form-label">Price:</label>
+    <input type="number" class="form-control" id="price" name="price" [(ngModel)]="product.price">
+    <div *ngIf="this.product.price <= 0" class="text-danger">
+      Price should be a positive, whole number.
     </div>
-  
-    <div class="mb-3">
-      <label for="location" class="form-label">Location:</label>
-      <select class="form-select" id="location" name="location" [(ngModel)]="product.location" required>
-        <option selected>ადგილმდებარეობა</option>
-        <option value="მთავარი ოფისი">მთავარი ოფისი</option>
-        <option value="კავეა გალერია">კავეა გალერია</option>
-        <option value="კავეა ისთ ფოინთი">კავეა ისთ ფოინთი</option>
-        <option value="კავეა სითი მოლი">კავეა სითი მოლი</option>
-      </select>
+  </div>
+  <div class="mb-3">
+    <label for="location" class="form-label">Location:</label>
+    <select class="form-select" id="location" name="location" [(ngModel)]="product.location">
+      <option value="" disabled selected>აირჩიე ადგილმდებარეობა</option>
+      <option value="მთავარი ოფისი">მთავარი ოფისი</option>
+      <option value="კავეა გალერია">კავეა გალერია</option>
+      <option value="კავეა თბილისი მოლი">კავეა თბილისი მოლი</option>
+      <option value="კავეა ისთ ფოინთი">კავეა ისთ ფოინთი</option>
+      <option value="კავეა სითი მოლი">კავეა სითი მოლი</option>
+    </select>
+    <div *ngIf="!product.location" class="text-danger">
+      Location cannot be empty.
     </div>
-  
-    <div>
-      <button type="submit" class="btn btn-primary">Add Product</button>
-    </div>
-  </form>
-  
+  </div>
+  <div>
+    <button type="submit" class="btn btn-primary">Add Product</button>
+  </div>
+</form>

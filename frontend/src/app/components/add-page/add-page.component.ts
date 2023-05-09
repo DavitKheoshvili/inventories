@@ -11,9 +11,9 @@ import { Router } from '@angular/router';
 })
 export class AddPageComponent {
   product: Product = { name: '', price: 0, location: '' };
-  
-  constructor(private addProductService: AddProductService, private router: Router) {}
 
+  constructor(private addProductService: AddProductService, private router: Router) {}
+  
   onSubmit() {
     console.log(this.product);
     this.addProductService.addProduct(this.product).subscribe((result) => {
