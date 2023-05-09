@@ -1,8 +1,9 @@
 const { Sequelize, DataTypes, Op } = require('sequelize');
+require('dotenv').config();
 
-const sequelize = new Sequelize('test', 'newuser', 'newpassword', {
-    host: 'localhost',
-    dialect: 'postgres',
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
     logging: false
 });
 
@@ -87,8 +88,6 @@ async function generateData() {
         }
     }
 }
-
-
 
 module.exports = {
     createProduct,
