@@ -33,15 +33,15 @@ async function getAllProducts(page, sortBy = "name", location = "") {
     const offset = (page - 1) * pageSize;
     const limit = pageSize;
     const where = location ? { location: { [Op.eq]: location } } : {};
-    const { count, rows } = await Product.findAndCountAll({ 
-        offset, 
+    const { count, rows } = await Product.findAndCountAll({
+        offset,
         where,
-        order: [[ sortBy , 'ASC']],
+        order: [[sortBy, 'ASC']],
         limit
     });
     const totalPages = Math.ceil(count / pageSize);
     const data = rows.map((row) => row.dataValues);
-    return { data, totalPages };
+    return { data, totalPages, totalItems: count };
 }
 
 async function updateProduct(id, name, price, location) {
@@ -55,8 +55,9 @@ async function deleteProduct(id) {
     return getAllProducts(1);
 }
 
-function generateData() {
-    const num_rows = 50;
+async function generateData() {
+    const num_rows = 300000;
+    const batch_size = 1000;
     const locations = [
         'მთავარი ოფისი',
         'კავეა გალერია',
@@ -64,23 +65,29 @@ function generateData() {
         'კავეა ისთ ფოინთი',
         'კავეა სითი მოლი'
     ];
-    const data = [];
-    for (let i = 1; i <= num_rows; i++) {
-        data.push({
-            name: Math.random().toString(36).substring(2, 12),
-            price: Math.floor(Math.random() * 100) + 1,
-            location: locations[Math.floor(Math.random() * locations.length)]
-        });
-    }
-    // Insert data into table
-    Product.bulkCreate(data)
-        .then(() => {
-            console.log(`Inserted ${num_rows} rows into TestTable`);
-        })
-        .catch((err) => {
+
+    let i = 0;
+    while (i < num_rows) {
+        const data = [];
+        for (let j = 1; j <= batch_size && i < num_rows; j++) {
+            data.push({
+                name: Math.random().toString(36).substring(2, 12),
+                price: Math.floor(Math.random() * 100) + 1,
+                location: locations[Math.floor(Math.random() * locations.length)]
+            });
+            i++;
+        }
+
+        try {
+            await Product.bulkCreate(data);
+            console.log(`Inserted ${data.length} rows into Products`);
+        } catch (err) {
             console.error('Error inserting data:', err);
-        })
+            return;
+        }
+    }
 }
+
 
 
 module.exports = {

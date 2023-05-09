@@ -9,5 +9,6 @@ export interface Product {
 
 export interface ProductResponce {
     data: Product[],
-    totalPages: number
+    totalPages: number,
+    totalItems: number
 }

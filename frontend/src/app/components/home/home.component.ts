@@ -11,8 +11,9 @@ import { DeleteProductService } from "../../services/delete-product.service"
 export class HomeComponent {
 
   products: Product[] = [];
-  currentPage = 1;
-  totalPages = 0;
+  currentPage: number = 1;
+  totalPages: number = 0;
+  totalItems: number = 0;
 
   sortBy: string = 'name';
   location: string = "";
@@ -24,6 +25,7 @@ export class HomeComponent {
       .subscribe(response => {
         this.products = response.data;
         this.totalPages = response.totalPages;
+        this.totalItems = response.totalItems;
       }
       );
   }
@@ -52,6 +54,7 @@ export class HomeComponent {
       .subscribe(response => {
         this.products = response.data;
         this.totalPages = response.totalPages;
+        this.totalItems = response.totalItems;
       }
       );
     }, (error) => {
