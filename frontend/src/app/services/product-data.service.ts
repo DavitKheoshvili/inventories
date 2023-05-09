@@ -12,8 +12,8 @@ export class ProductDataService {
    
   constructor(private httpClient: HttpClient) { }
   
-  getProduct(page: number): Observable<ProductResponce>{
-    const params = new HttpParams().set('page', String(page));
+  getProduct(page: number, sortBy: string, location: string ): Observable<ProductResponce>{
+    const params = new HttpParams().set('page', String(page)).set('sortBy', String(sortBy)).set('location', String(location));
     return this.httpClient.get<ProductResponce>(this.url, { params });
   }
 }

@@ -1,3 +1,27 @@
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="sortByDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Sort By
+  </button>
+  <div class="dropdown-menu" aria-labelledby="sortByDropdown">
+    <a class="dropdown-item" href="#" (click)="setSortBy('name')">Name</a>
+    <a class="dropdown-item" href="#" (click)="setSortBy('price')">Price</a>
+  </div>
+</div>
+
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="locationDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Location
+  </button>
+  <div class="dropdown-menu" aria-labelledby="locationDropdown">
+    <a class="dropdown-item" href="#" (click)="setLocation('')">ყველა</a>
+    <a class="dropdown-item" href="#" (click)="setLocation('მთავარი ოფისი')">მთავარი ოფისი</a>
+    <a class="dropdown-item" href="#" (click)="setLocation('კავეა გალერია')">კავეა გალერია</a>
+    <a class="dropdown-item" href="#" (click)="setLocation('კავეა თბილისი მოლი')">კავეა თბილისი მოლი</a>
+    <a class="dropdown-item" href="#" (click)="setLocation('კავეა ისთ ფოინთი')">კავეა ისთ ფოინთი</a>
+    <a class="dropdown-item" href="#" (click)="setLocation('კავეა სითი მოლი')">კავეა სითი მოლი</a>
+  </div>
+</div>
+
 <table class="table table-striped" *ngFor="let product of products">
     <thead>
       <tr>

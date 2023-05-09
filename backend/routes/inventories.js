@@ -5,7 +5,9 @@ const router = express();
 router
     .get("/", (req, res) => {
         const page = parseInt(req.query.page) || 1;
-        getAllProducts(page)
+        const sortBy = req.query.sortBy;
+        const location = req.query.location;
+        getAllProducts(page, sortBy, location)
             .then(productData => {
                 res.status(200).json(productData);
             })
@@ -41,8 +43,5 @@ router.delete("/:id", (req, res) => {
         })
 })
 
-// router.param("param", (req, res, next, param) => {
-// //     I will use this code to sort data later
-// })
 
 module.exports = router;

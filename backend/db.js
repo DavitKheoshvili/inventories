@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const { Sequelize, DataTypes, Op } = require('sequelize');
 
 const sequelize = new Sequelize('test', 'newuser', 'newpassword', {
     host: 'localhost',
@@ -29,10 +29,16 @@ async function createProduct(name, price, location) {
 }
 
 const pageSize = 20;
-async function getAllProducts(page) {
+async function getAllProducts(page, sortBy = "name", location = "") {
     const offset = (page - 1) * pageSize;
     const limit = pageSize;
-    const { count, rows } = await Product.findAndCountAll({ offset, limit });
+    const where = location ? { location: { [Op.eq]: location } } : {};
+    const { count, rows } = await Product.findAndCountAll({ 
+        offset, 
+        where,
+        order: [[ sortBy , 'ASC']],
+        limit
+    });
     const totalPages = Math.ceil(count / pageSize);
     const data = rows.map((row) => row.dataValues);
     return { data, totalPages };
@@ -51,15 +57,21 @@ async function deleteProduct(id) {
 
 function generateData() {
     const num_rows = 50;
+    const locations = [
+        'მთავარი ოფისი',
+        'კავეა გალერია',
+        'კავეა თბილისი მოლი',
+        'კავეა ისთ ფოინთი',
+        'კავეა სითი მოლი'
+    ];
     const data = [];
     for (let i = 1; i <= num_rows; i++) {
         data.push({
             name: Math.random().toString(36).substring(2, 12),
             price: Math.floor(Math.random() * 100) + 1,
-            location: Math.random().toString(36).substring(2, 12),
+            location: locations[Math.floor(Math.random() * locations.length)]
         });
     }
-    console.log(data);
     // Insert data into table
     Product.bulkCreate(data)
         .then(() => {
@@ -69,6 +81,26 @@ function generateData() {
             console.error('Error inserting data:', err);
         })
 }
+
+// function generateData() {
+//     const num_rows = 50;
+//     const data = [];
+//     for (let i = 1; i <= num_rows; i++) {
+//         data.push({
+//             name: Math.random().toString(36).substring(2, 12),
+//             price: Math.floor(Math.random() * 100) + 1,
+//             location: Math.random().toString(36).substring(2, 12),
+//         });
+//     }
+//     // Insert data into table
+//     Product.bulkCreate(data)
+//         .then(() => {
+//             console.log(`Inserted ${num_rows} rows into TestTable`);
+//         })
+//         .catch((err) => {
+//             console.error('Error inserting data:', err);
+//         })
+// }
 
 
 module.exports = {

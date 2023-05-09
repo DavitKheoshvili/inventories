@@ -14,10 +14,22 @@ export class HomeComponent {
   currentPage = 1;
   totalPages = 0;
 
+  sortBy: string = 'name';
+  location: string = "";
+
   constructor(private service: ProductDataService, private deleteService: DeleteProductService) { }
 
   ngOnInit() {
-    this.service.getProduct(this.currentPage)
+    this.service.getProduct(this.currentPage, this.sortBy, this.location)
+      .subscribe(response => {
+        this.products = response.data;
+        this.totalPages = response.totalPages;
+      }
+      );
+  }
+  setSortBy(sortBy: string) {
+    this.sortBy = sortBy;
+    this.service.getProduct(this.currentPage, this.sortBy, this.location)
       .subscribe(response => {
         this.products = response.data;
         this.totalPages = response.totalPages;
@@ -25,9 +37,18 @@ export class HomeComponent {
       );
   }
 
+  setLocation(location: string) {
+    this.location = location;
+    this.service.getProduct(this.currentPage, this.sortBy, this.location)
+      .subscribe(response => {
+        this.products = response.data;
+        this.totalPages = response.totalPages;
+      }
+      );
+  }
   onDeleteProduct(id: number | undefined) {
     this.deleteService.deleteProduct(id).subscribe(() => {
-      this.service.getProduct(this.currentPage)
+      this.service.getProduct(this.currentPage, this.sortBy, this.location)
       .subscribe(response => {
         this.products = response.data;
         this.totalPages = response.totalPages;
@@ -40,7 +61,7 @@ export class HomeComponent {
   
   prevPage() {
     this.currentPage--;
-    this.service.getProduct(this.currentPage)
+    this.service.getProduct(this.currentPage, this.sortBy, this.location)
       .subscribe(response => {
         this.products = response.data;
         this.totalPages = response.totalPages;
@@ -50,7 +71,7 @@ export class HomeComponent {
 
   nextPage() {
     this.currentPage++;
-    this.service.getProduct(this.currentPage)
+    this.service.getProduct(this.currentPage, this.sortBy, this.location)
       .subscribe(response => {
         this.products = response.data;
         this.totalPages = response.totalPages;
