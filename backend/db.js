@@ -82,26 +82,6 @@ function generateData() {
         })
 }
 
-// function generateData() {
-//     const num_rows = 50;
-//     const data = [];
-//     for (let i = 1; i <= num_rows; i++) {
-//         data.push({
-//             name: Math.random().toString(36).substring(2, 12),
-//             price: Math.floor(Math.random() * 100) + 1,
-//             location: Math.random().toString(36).substring(2, 12),
-//         });
-//     }
-//     // Insert data into table
-//     Product.bulkCreate(data)
-//         .then(() => {
-//             console.log(`Inserted ${num_rows} rows into TestTable`);
-//         })
-//         .catch((err) => {
-//             console.error('Error inserting data:', err);
-//         })
-// }
-
 
 module.exports = {
     createProduct,
