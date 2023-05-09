@@ -1,46 +1,45 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateData = exports.deleteProduct = exports.getAllProducts = exports.createProduct = void 0;
-const sequelize_1 = require("sequelize");
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
-const DB_NAME = process.env.DB_NAME;
-const DB_USER = process.env.DB_USER;
-const DB_DIALECT = process.env.DB_DIALECT;
-const sequelize = new sequelize_1.Sequelize(DB_NAME, DB_USER, process.env.DB_PASSWORD, {
+import { Sequelize, DataTypes, Op, Dialect, Model } from 'sequelize';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const DB_NAME: string = process.env.DB_NAME as string;
+const DB_USER: string = process.env.DB_USER as string;
+const DB_DIALECT: Dialect = process.env.DB_DIALECT as Dialect;
+
+
+const sequelize: Sequelize = new Sequelize(DB_NAME, DB_USER, process.env.DB_PASSWORD, {
     host: process.env.DB_HOST,
     dialect: DB_DIALECT,
     logging: false
 });
+
 // Define a model for the table
 const Product = sequelize.define('Product', {
     // Define the columns of the table
     name: {
-        type: sequelize_1.DataTypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false
     },
     price: {
-        type: sequelize_1.DataTypes.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     location: {
-        type: sequelize_1.DataTypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
     }
 });
-async function createProduct(name, price, location) {
+
+export async function createProduct(name: string, price: number, location: string) {
     const product = await Product.create({ name, price, location });
     return getAllProducts(1);
 }
-exports.createProduct = createProduct;
+
 const pageSize = 20;
-async function getAllProducts(page, sortBy = "name", location = "") {
+export async function getAllProducts(page: number, sortBy: string = "name", location: string = "") {
     const offset = (page - 1) * pageSize;
     const limit = pageSize;
-    const where = location ? { location: { [sequelize_1.Op.eq]: location } } : {};
+    const where = location ? { location: { [Op.eq]: location } } : {};
     const { count, rows } = await Product.findAndCountAll({
         offset,
         where,
@@ -51,16 +50,16 @@ async function getAllProducts(page, sortBy = "name", location = "") {
     const data = rows.map((row) => row.dataValues);
     return { data, totalPages, totalItems: count };
 }
-exports.getAllProducts = getAllProducts;
-async function deleteProduct(id) {
+
+export async function deleteProduct(id: number) {
     const product = await Product.findByPk(id);
-    if (product) {
+    if(product){
         await product.destroy();
     }
     return getAllProducts(1);
 }
-exports.deleteProduct = deleteProduct;
-async function generateData() {
+
+export async function generateData() {
     const num_rows = 300000;
     const batch_size = 1000;
     const locations = [
@@ -70,6 +69,7 @@ async function generateData() {
         'კავეა ისთ ფოინთი',
         'კავეა სითი მოლი'
     ];
+
     let i = 0;
     while (i < num_rows) {
         const data = [];
@@ -81,14 +81,13 @@ async function generateData() {
             });
             i++;
         }
+
         try {
             await Product.bulkCreate(data);
             console.log(`Inserted ${data.length} rows into Products`);
-        }
-        catch (err) {
+        } catch (err) {
             console.error('Error inserting data:', err);
             return;
         }
     }
 }
-exports.generateData = generateData;
