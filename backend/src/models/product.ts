@@ -1,36 +1,58 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from './index';
 
-class Product extends Model {
-  public id!: number;
+interface ProductAttributes {
+  id: string;
+  name: string;
+  price: number;
+  location: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+interface ProductCreationAttributes extends Optional<ProductAttributes, 'id'> {}
+
+class Product extends Model<ProductAttributes, ProductCreationAttributes> implements ProductAttributes {
+  public id!: string;
   public name!: string;
   public price!: number;
   public location!: string;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
 Product.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV1,
       primaryKey: true,
+      allowNull: false,
     },
     name: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING,
       allowNull: false,
     },
     price: {
-      type: DataTypes.FLOAT.UNSIGNED,
+      type: DataTypes.FLOAT,
       allowNull: false,
     },
     location: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING,
       allowNull: false,
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
     },
   },
   {
-    tableName: 'items',
     sequelize,
+    modelName: 'Product',
   },
 );
 

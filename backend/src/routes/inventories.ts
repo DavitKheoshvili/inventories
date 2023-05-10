@@ -20,6 +20,7 @@ router.post('/', (req: Request, res: Response) => {
   const price = req.body.price as number;
   const location = req.body.location as string;
   if (name && price && location) {
+    console.log("true")
     createProduct(name, price, location)
       .then((productData) => {
         res.status(200).json(productData);
@@ -33,7 +34,7 @@ router.post('/', (req: Request, res: Response) => {
 });
 
 router.delete('/:id', (req: Request, res: Response) => {
-  deleteProduct(parseInt(req.params.id))
+  deleteProduct(req.params.id)
     .then((productData) => {
       res.status(200).json(productData);
     })

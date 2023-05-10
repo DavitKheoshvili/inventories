@@ -1,6 +1,7 @@
 import { Sequelize, DataTypes, Op, Dialect, Model } from 'sequelize';
 import dotenv from 'dotenv';
 dotenv.config();
+import Product from './models/product';
 
 const DB_NAME: string = process.env.DB_NAME as string;
 const DB_USER: string = process.env.DB_USER as string;
@@ -13,25 +14,12 @@ const sequelize: Sequelize = new Sequelize(DB_NAME, DB_USER, process.env.DB_PASS
     logging: false
 });
 
-// Define a model for the table
-const Product = sequelize.define('Product', {
-    // Define the columns of the table
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    price: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    location: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    }
-});
-
 export async function createProduct(name: string, price: number, location: string) {
-    const product = await Product.create({ name, price, location });
+    await Product.create({ name, price, location }).then(result => {
+        console.log("Product Created")
+    }).catch(error => {
+        console.log("Create error")
+    });
     return getAllProducts(1);
 }
 
@@ -51,10 +39,14 @@ export async function getAllProducts(page: number, sortBy: string = "name", loca
     return { data, totalPages, totalItems: count };
 }
 
-export async function deleteProduct(id: number) {
-    const product = await Product.findByPk(id);
-    if(product){
-        await product.destroy();
+export async function deleteProduct(id: string) {
+    const product = await Product.findByPk(id).catch(error => {
+        console.log("find");
+    });
+    if (product) {
+        await product.destroy().then().catch(error => {
+            console.log("destroy");
+        });
     }
     return getAllProducts(1);
 }

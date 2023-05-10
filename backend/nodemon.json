@@ -1,6 +1,7 @@
 {
     "watch": [
-        ""
+        "src/**/*.ts",
+        "src/routes/inventories.ts"
     ],
     "ext": "ts",
     "execMap": {
