@@ -44,3 +44,5 @@ Thumbs.db
 # JS files in Src
 src/**/*.js
 
+# Sequelize config
+src/config
